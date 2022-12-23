@@ -188,27 +188,27 @@ type URLBuilder interface {
 }
 
 type Store interface {
-	ByID(apiOp *APIRequest, schema *APISchema, id string) (APIObject, error)
-	List(apiOp *APIRequest, schema *APISchema) (APIObjectList, error)
-	Create(apiOp *APIRequest, schema *APISchema, data APIObject) (APIObject, error)
-	Update(apiOp *APIRequest, schema *APISchema, data APIObject, id string) (APIObject, error)
+	ByID(apiOp *APIRequest, schema *APISchema, id string) (APIObject, []Warning, error)
+	List(apiOp *APIRequest, schema *APISchema) (APIObjectList, []Warning, error)
+	Create(apiOp *APIRequest, schema *APISchema, data APIObject) (APIObject, []Warning, error)
+	Update(apiOp *APIRequest, schema *APISchema, data APIObject, id string) (APIObject, []Warning, error)
 	Delete(apiOp *APIRequest, schema *APISchema, id string) (APIObject, error)
 	Watch(apiOp *APIRequest, schema *APISchema, w WatchRequest) (chan APIEvent, error)
 }
 
-func DefaultByID(store Store, apiOp *APIRequest, schema *APISchema, id string) (APIObject, error) {
-	list, err := store.List(apiOp, schema)
+func DefaultByID(store Store, apiOp *APIRequest, schema *APISchema, id string) (APIObject, []Warning, error) {
+	list, warnings, err := store.List(apiOp, schema)
 	if err != nil {
-		return APIObject{}, err
+		return APIObject{}, nil, err
 	}
 
 	for _, item := range list.Objects {
 		if item.ID == id {
-			return item, nil
+			return item, warnings, nil
 		}
 	}
 
-	return APIObject{}, validation.NotFound
+	return APIObject{}, warnings, validation.NotFound
 }
 
 type WatchRequest struct {
