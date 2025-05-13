@@ -28,6 +28,7 @@ var (
 				"resourceMethods":   {Type: "array[string]"},
 				"version":           {Type: "map[json]"},
 			},
+			ResourcePermissions: map[string]schemas.ResourceVerbs{},
 		},
 		Formatter: SchemaFormatter,
 		Store:     schema.NewSchemaStore(),

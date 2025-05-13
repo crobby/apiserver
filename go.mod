@@ -4,6 +4,8 @@ go 1.23.0
 
 toolchain go1.23.6
 
+replace github.com/rancher/wrangler/v3 => github.com/crobby/wrangler/v3 v3.0.0-20250513100937-81b10cca06a5
+
 require (
 	github.com/ghodss/yaml v1.0.0
 	github.com/golang/mock v1.6.0
